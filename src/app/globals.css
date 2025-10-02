@@ -1,0 +1,270 @@
+@import "tailwindcss";
+
+/* Brand design tokens for Flixa */
+:root {
+  --background: #0b0b10;
+  --foreground: #e7e7ea;
+  --muted: #0f1117;
+  --muted-foreground: #9aa0aa;
+  --card: #0c0d12;
+  --card-foreground: #e7e7ea;
+  --border: #1a1d26;
+
+  /* Flixa brand */
+  --brand: #6c6cff; /* indigo-electric */
+  --brand-contrast: #0b0b10;
+  --accent: #22d3ee; /* cyan */
+  --accent-2: #a855f7; /* violet */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-brand: var(--brand);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #ffffff;
+    --foreground: #0f1222;
+    --muted: #f6f7fb;
+    --muted-foreground: #5b6172;
+    --card: #ffffff;
+    --card-foreground: #0f1222;
+    --border: #e5e7ef;
+  }
+}
+
+/* Explicit theme selectors to avoid FOUC and allow toggle */
+:root[data-theme="dark"] {
+  --background: #0b0b10;
+  --foreground: #e7e7ea;
+  --muted: #0f1117;
+  --muted-foreground: #9aa0aa;
+  --card: #0c0d12;
+  --card-foreground: #e7e7ea;
+  --border: #1a1d26;
+}
+
+:root[data-theme="light"] {
+  --background: #ffffff;
+  --foreground: #0f1222;
+  --muted: #f6f7fb;
+  --muted-foreground: #5b6172;
+  --card: #ffffff;
+  --card-foreground: #0f1222;
+  --border: #e5e7ef;
+}
+
+/* Smooth color transitions for theme changes */
+html, body, .glass {
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* Base globals */
+html, body {
+  height: 100%;
+}
+
+body {
+  background: 
+    radial-gradient(ellipse 1400px 900px at 80% -5%, color-mix(in oklab, var(--brand) 15%, transparent) 0%, transparent 70%),
+    radial-gradient(ellipse 1200px 800px at 20% 15%, color-mix(in oklab, var(--accent) 12%, transparent) 0%, transparent 65%),
+    radial-gradient(ellipse 800px 600px at 90% 85%, color-mix(in oklab, var(--accent-2) 8%, transparent) 0%, transparent 60%),
+    var(--background);
+  background-attachment: fixed;
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Card and glass utilities */
+@utility glass {
+  @apply backdrop-blur-xl bg-white/[0.08] dark:bg-white/[0.08] border border-white/[0.15] shadow-[0_0_1px_0_rgba(255,255,255,0.4)_inset,0_25px_100px_-25px_rgba(0,0,0,0.4)] rounded-2xl;
+}
+
+@utility container-px {
+  @apply px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12;
+}
+
+/* Animated gradient text */
+.gradient-text {
+  background: linear-gradient(90deg, var(--brand), var(--accent), var(--accent-2));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-shift 3s ease-in-out infinite;
+}
+
+/* Custom animations */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-gradient {
+  animation: gradient-shift 3s ease-in-out infinite;
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus styles for accessibility */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* Scroll animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+/* Stagger animations for grid items */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+.stagger-6 { animation-delay: 0.6s; }
+
+/* Improved hover effects */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 80px -20px rgba(108, 108, 255, 0.3);
+}
+
+/* Better mobile spacing */
+@media (max-width: 768px) {
+  .mobile-spacing {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}
+
+/* Additional responsive utilities */
+@media (max-width: 640px) {
+  .container-px {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Custom gradient utilities */
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+/* Enhanced scroll behavior */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 120px; /* Account for sticky header and better positioning */
+}
+
+/* Ensure sections have proper spacing for navigation */
+section[id] {
+  scroll-margin-top: 120px;
+}
+
+/* Improved button hover effects */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transition: left 0.5s;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+/* Loading skeleton animation */
+@keyframes skeleton-loading {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200px 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
